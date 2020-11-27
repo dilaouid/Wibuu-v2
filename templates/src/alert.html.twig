@@ -1,0 +1,10 @@
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+        <div class="alert alert-{{ label }} {{ label == 'success' ? 'pulse' : 'flash' }} animated" role="alert" style="border-radius: 20px;">
+        {% if label == 'success' %}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+        {% endif %}
+            <span>{{ message }}</span>
+        </div>
+    {% endfor %}
+{% endfor %}

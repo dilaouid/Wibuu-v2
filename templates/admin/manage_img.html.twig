@@ -1,0 +1,64 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %} {{ data.pagename }} {% endblock %}
+
+{% block content %}
+<h3 class="text-white mb-4">{{ data.titleContent }}</h3>
+
+{{ form_start(form) }}
+
+    <div class="form-row {% if flashtype == 'warning' %} shake animated {% endif %} mb-3">
+        <div class="col-lg-4">
+            <div class="card mb-3" style="height: 318px;background: rgba(255,255,255,0);">
+                <div class="card-body text-center shadow-lg" style="background: rgba(20,20,20,0.7);border-style: none;border-radius: 25px;">
+                    <img class="img-fluid shadow mb-3 mt-4 {{ data.previewClass }}" data-bs-hover-animate="pulse" src="{{ data.previewLink }}" id="cover">
+                    <div class="mb-3">
+                        <button class="btn btn-danger btn-sm" data-bs-hover-animate="pulse" type="button" style="border-radius: 16px;" id="loadFile">Changer image</button>
+                        </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="form-row">
+                <div class="col">
+                    <div class="card shadow mb-3" style="height: 316px;border-radius: 20px;">
+                        <div class="card-header py-3" style="background: rgb(20,20,20);border-top-left-radius: 20px;border-top-right-radius: 20px;">
+                            <p class="text-primary m-0 font-weight-bold">{{ data.titleContent }}</p>
+                        </div>
+                        <div class="card-body">
+                            <div style="display:none">{{ form_row(form.file) }}</div>
+                            <div class="form-row">
+                                <div class="col">
+                                    {{ data.previewClass == 'sideImgManage' ? form_row(form.anime) : form_row(form.name) }}
+                                </div>
+                                <div class="col">
+                                    {{ data.previewClass == 'sideImgManage' ? form_row(form.position) : form_row(form.origin) }}
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="col">
+                                    {{ data.previewClass == 'sideImgManage' ? form_row(form.link) : form_row(form.tags) }}
+                                </div>
+                            </div>
+                                <div class="form-group text-right">
+                                    <button class="btn btn-danger btn-sm btnLogin" data-bs-hover-animate="pulse" id="submitBtn" type="submit" style="margin-top: 16px;width: 225px;height: 38px;" disabled="true">{{ data.btn }}</button>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{{ form_end(form) }}
+
+{{ include ('src/alert.html.twig') }}
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="/assets/js/formLogin.js"></script>
+    <script src="/assets/js/previewImport.js"></script>
+{% endblock %}

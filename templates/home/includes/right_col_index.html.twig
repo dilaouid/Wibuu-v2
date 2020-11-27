@@ -1,0 +1,72 @@
+<div class="col-12 col-sm-12 col-md-5 order-1">
+    <!-- Start: YOUR PROFILE -->
+
+    <div class="row">
+        <div class="col-auto"><a href="/me">
+            <img class="rounded-circle" data-bs-hover-animate="jello" src="/assets/img/{{ user.username }}/profil.jpg" style="width: 80px;height: 80px;"></a></div>
+            <div class="col-auto align-self-center" style="color: rgb(255,255,255);text-align: left;margin-left: -13px;">
+                <a class="text-dark noDecoLink" href="/me" style="font-size: 19px">
+                    <strong>{{ user.username }}</strong>
+                </a>
+            {% if user.name != null or user.lastname != null %}
+            <p class="text-secondary">{{ user.name }}{{ user.name == null ? '' : ' ' }}{{ user.lastname }}</p>
+        </div>
+    </div>
+
+    <!-- End: YOUR PROFILE -->
+
+    <!-- Start: SUGGESTIONS -->
+    <div class="row" style="margin-top: 27px;">
+        <div class="col">
+            <p><strong>Suggestions</strong></p>
+        </div>
+        <div class="col offset-6 offset-sm-8 offset-md-5 offset-lg-6 offset-xl-7">
+            <p class="text-white"><strong>Voir tout</strong></p>
+        </div>
+    </div>
+    <!-- End: SUGGESTIONS -->
+
+
+    <!-- Start: SUGGESTIONS PROFILES -->
+    <div>
+        {% if suggests|length > 0 %}
+
+            {% for suggest in suggests %}
+            <div class="row" style="margin-bottom: 12px;">
+                <div class="col-auto"><a href="/user/{{ suggest.username }}"><img class="rounded-circle" data-bs-hover-animate="tada" src="/assets/img/{{ suggest.username }}/profil.jpg" style="width: 50px;height: 50px;"></a></div>
+                <div class="col-auto" style="margin-left: -17px;">
+                    <p>
+                        <strong><a href="/user/{{ suggest.username }}" class="noDecoLink">{{ suggest.username }}</a></strong><br>
+                        Suivi(e) par <a href="/user/{{ suggest.relation }}" class="noDecoLink">{{ suggest.relation }}</a>
+                    </p>
+                </div>
+                <div class="col text-right align-self-center" style="margin-left: -17px;">
+                    {# <span class="spinner-border spinner-border-sm text-danger" role="status"></span> #}
+                    {# <p class="unfollow" user="{{ suggest.id }}"><strong>Abonné(e)</strong></p> #}
+                    <p class="text-danger follow" user="{{ suggest.id }}"><strong>S'abonner</strong></p>
+                </div>
+            </div>
+            {% endfor %}
+
+        {% else %}
+            <div class="row" style="margin-bottom: 12px;">
+                <div class="col" style="margin-left: -17px;">
+                    <p class="text-center text-secondary">Aucune suggestion ...</p>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    <!-- End: SUGGESTIONS PROFILES -->
+
+
+    <hr>
+
+    <div class="row">
+        <div class="col">
+            <p class="text-secondary"><a href="/about" class="noDecoLink">À propos</a> • <a href="/help" class="noDecoLink">Aide</a> • <a href="/api" class="noDecoLink">API</a> • <a href="/cgu" class="noDecoLink">Conditions</a>
+            <br><br>
+            © 2020 WIBUU<br></p>
+        </div>
+    </div>
+
+</div>

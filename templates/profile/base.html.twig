@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Wibuu - {{ profile.username }}</title>
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Adamina">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Allerta+Stencil">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora">
+    <link rel="stylesheet" href="/assets/fonts/fontawesome5-overrides.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.2.0/aos.css">
+{% endblock %}
+{{ include('src/css.html') }}
+
+<body style="background: url(/assets/img/bg/bg.jpg);">
+    {{ include('src/navbar.html.twig') }}
+    <div class="container">
+
+    {{ include('profile/includes/profil_infos.html.twig') }}
+
+    {% if profile.locked == true and profile.me == false %}
+        {{ include('profile/includes/private.html.twig') }}
+    {% else %}
+    <div class="text-center">
+        {{ include('profile/includes/tabs.html.twig') }}
+        {{ include('profile/includes/tabs_content.html.twig') }}
+    </div>
+    {% endif %}
+
+    <div class="row text-uppercase justify-content-center" style="margin-top: 29px;margin-bottom: 29px;">
+        <div class="col-auto"><a href="#" style="text-decoration: none;"><strong>à propos</strong></a></div>
+        <div class="col-auto"><a href="#" style="text-decoration: none;"><strong>aide</strong></a></div>
+        <div class="col-auto"><a href="#" style="text-decoration: none;"><strong>API</strong></a></div>
+        <div class="col-auto"><a href="#" style="text-decoration: none;"><strong>conditions</strong></a></div>
+        <div class="col-auto">
+            <p><strong>© 2020 wibuu</strong><br></p>
+        </div>
+    </div>
+
+
+    <div>
+        <video src="youtube.com" id="4">
+    </div>
+
+    <div>
+        <video src="youtube.com" id="5">
+    </div>
+
+
+    {{ profile.me ? '' : include('src/modal.html.twig') }}
+
+    </div>
+</body>
+
+    {% block javascripts %}
+    {{ include('src/js.html') }}
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+
+    $(function () {
+
+        function Utils() {
+
+        }
+
+        Utils.prototype = {
+            constructor: Utils,
+            isElementInView: function (element, fullyInView) {
+                if ($(element).offset() != undefined) {
+                    var pageTop = $(window).scrollTop();
+                    var pageBottom = pageTop + $(window).height();
+                    var elementTop = $(element).offset().top;
+                    var elementBottom = elementTop + $(element).height();
+
+                    if (fullyInView === true) {
+                        return ((pageTop < elementTop) && (pageBottom > elementBottom));
+                    } else {
+                        return ((elementTop <= pageBottom) && (elementBottom >= pageTop));
+                    }
+                }
+            }
+        };
+
+        var Utils   = new Utils();
+        var offset  = 9;
+
+        $('.followbtn').click(function (){
+            $(this).attr('class', 'btn btn-outline-secondary waitbtn');
+            $(this).html('<span class="spinner-border spinner-border-sm" role="status"></span>');
+            $.ajax({
+                url: url + `follow/${$(this).attr('user')}`,
+                type: 'GET',
+                dataType: 'json',
+                success: function(res) {
+                    switch (res.statut) {
+                        case 'await':
+                            $('.waitbtn').html('En attente...');
+                            $('.waitbtn').attr('class', 'btn btn-outline-secondary followbtn');
+                            break;
+                        case 'done':
+                            $('.waitbtn').html('Se désabonner');
+                            $('.waitbtn').attr('class', 'btn btn-danger followbtn');
+                            $('#followersnb').html(parseInt($('#followersnb').html()) + 1);
+                            break;
+                        case 'unfollowed':
+                            $('.waitbtn').html("S'abonner");
+                            $('.waitbtn').attr('class', 'btn btn-outline-danger followbtn');
+                            $('#followersnb').html(parseInt($('#followersnb').html()) - 1);
+                            break;
+                        case 'unawait':
+                            $('.waitbtn').html("S'abonner");
+                            $('.waitbtn').attr('class', 'btn btn-outline-danger followbtn');
+                            break;
+                        default:
+                            break;
+                    }
+                },
+                error: function(res) {
+                    $('.waitbtn').attr('class', 'btn btn-danger followbtn');
+                    $('.waitbtn').html(res.statut);
+                },
+                complete: function() {
+
+                }
+            });
+        });
+
+        $(window).scroll(function() {
+            var isElementInView = Utils.isElementInView($('#spinnerloadPublications'), false);
+            if (isElementInView && $('#spinnerloadPublications')) {
+                $.ajax({
+                    url: url + 'get/post/' + $('#spinnerloadPublications').attr('user') + '/' + offset,
+                    type: 'GET',
+                    dataType: 'json',
+                    async: false,
+                    success: function(res) {
+                        let $clone = $('.boxPicGalleryProfil').first().clone();
+                        $.each(res.data, function(index, el) {
+                            let iconLike    = el.liked == true ? '' : '-o';
+                            let iconComment = el.commented == true ? '' : '-o';
+                            let privateicon = el.private == true ? '<div class="row no-gutters justify-content-center" style="width: 100%;"><div class="col-auto align-self-center"><p><i class="fa fa-key"></i></p></div></div>' : '';
+                            $('.gallerylistPublications').append(`
+                                    <div class="col-3 boxPicGalleryProfil" style="${el.url}">
+                                    <div data-aos="zoom-out"><a class="text-body" href="/post/${el.uuid}">
+                                    <div class="infosPic">
+                                    <div class="row no-gutters justify-content-center imageHoverInfos">
+                                    <div class="col-auto align-self-center">
+                                    <p><i class="fa fa-heart${iconLike}"></i> ${el.like}</p>
+                                    </div>
+                                    <div class="col-auto offset-1">
+                                        <p><i class="fa fa-comment${iconComment}"></i> ${el.comment}</p>
+                                    </div>
+                                    </div>
+                                    ${privateicon}
+                                    </div></a></div></div>`);
+                        });
+
+                    },
+                    error: function() {
+                        $('div').remove('#spinnerloadPublications');
+                    },
+                    complete: function(res) {
+                        offset += 6;
+                    }
+                });
+            }
+        });
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+    {% endblock %}

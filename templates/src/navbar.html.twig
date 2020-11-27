@@ -1,0 +1,46 @@
+{% set notificationsCount = app.user.countNotificationsNotRead() %}
+<nav class="navbar navbar-dark navbar-expand sticky-top bg-dark shadow-lg" data-aos="slide-down" style="height: 70px;">
+    <div class="container">
+        <a class="navbar-brand" href="/">
+            <img src="/assets/img/logo.png" style="width: 127px;opacity: 1;"></a>
+        <button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span>
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse text-right" id="navcol-1" style="background-color: #060606;margin-left: -16px;margin-right: -16px;">
+            <ul class="nav navbar-nav d-xl-flex ml-auto justify-content-xl-center align-items-xl-center">
+                <li class="nav-item d-md-flex align-items-md-center {{ pageNav == 'home' ? 'active' : '' }}" role="presentation" data-bs-hover-animate="pulse">
+                    <a class="nav-link iconTy" href="/{{ pageNav == 'home' ? '#' : '' }}"><i class="la la-home"></i></a>
+                </li>
+                <li class="nav-item d-md-flex align-items-md-center {{ pageNav == 'submit' ? 'active' : '' }} " role="presentation" data-bs-hover-animate="pulse">
+                    <a class="nav-link iconTy" href="/submit{{ pageNav == 'submit' ? '#' : '' }}"><i class="fa fa-camera-retro"></i></a>
+                </li>
+                <li class="nav-item d-md-flex align-items-md-center {{ pageNav == 'explore' ? 'active' : '' }}" role="presentation" data-bs-hover-animate="pulse">
+                    <a class="nav-link iconTy" href="/explore{{ pageNav == 'explore' ? '#' : '' }}"><i class="fa fa-compass"></i></a>
+                </li>
+                <li class="nav-item d-md-flex align-items-md-center {{ pageNav == 'messages' ? 'active' : '' }}" role="presentation" data-bs-hover-animate="pulse">
+                    <a class="nav-link iconTy" href="/messages{{ pageNav == 'messages' ? '#' : '' }}"><i class="fa fa-envelope-o" ></i></a>
+                </li>
+                <li class="nav-item d-md-flex align-items-md-center {{ pageNav == 'notifications' ? 'active' : '' }}" role="presentation" data-bs-hover-animate="pulse">
+                    <a class="nav-link iconTy" href="/notifications{{ pageNav == 'notifications' ? '#' : '' }}"><i class="fa fa-bell{{ notificationsCount > 0 ? '' : '-o'}}"></i>
+                    {% if notificationsCount > 0 %}
+                    <span class="badge badge-danger" style="font-size:10px">{{ notificationsCount }}</span>
+                    {% endif %}
+                    </a>
+                </li>
+                <li class="nav-item d-md-flex justify-content-md-center align-items-md-center" role="presentation">
+                <div class="nav-item dropdown">
+                    <a class="dropdown-toggle text-white" data-toggle="dropdown" aria-expanded="false" href="#">
+                        <img class="rounded-circle img-fluid" data-bs-hover-animate="tada" src="/assets/img/{{ app.user.uuid }}/profil.jpg" style="height: 40px;width: 40px;max-height: 40px;max-width: 40px;"></a>
+                    <div class="dropdown-menu dropdown-menu-right" role="menu">
+                        <a class="dropdown-item" role="presentation" href="/user/{{ app.user.username }}"><i class="fa fa-user-circle" style="margin-right: 7px;"></i>Profil<br></a>
+                        <a class="dropdown-item" role="presentation" href="/user/{{ app.user.username }}#bookmarks"><i class="fa fa-bookmark" style="margin-right: 7px;"></i>Enregistré<br></a>
+                        <a class="dropdown-item" role="presentation" href="/settings"><i class="fa fa-gear" style="margin-right: 7px;"></i>Paramètres</a>
+                        <hr>
+                        <a class="dropdown-item" role="presentation" href="/logout"><i class="fa fa-sign-out" style="margin-right: 7px;"></i>Déconnexion</a>
+                    </div>
+                </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

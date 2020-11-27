@@ -1,0 +1,72 @@
+{% extends 'home/base.html.twig' %}
+
+{% block title %}Nouvelle publication{% endblock %}
+
+{% block stylesheets %}{% endblock %}
+
+{% block body %}
+<div class="container notifBox" style="margin-top: 22px;">
+    {% set notificationsCount = app.user.getNotifications()|length %}
+    {% if notificationsCount > 0 %}
+        {% for notif in app.user.getNotifications() %}
+            {% set author = notif.getAuthor() %}
+            <div class="row justify-content-center notificationLine" data-aos="zoom-out" id="{{ notif.id }}">
+                <div class="col-auto">
+                    <img class="rounded-circle" src="/assets/img/{{ author.uuid }}/profil.jpg" style="width: 50px;">
+                </div>
+                <div class="col-10 col-sm-8 col-md-9 col-lg-10" style="margin-top: 12px;">
+                <p>
+                {% if notif.nature == 'askfollow' %}
+                    <strong><a class="noDecoLink" href="/user/{{ author.username }}">{{ author.username }}</a></strong> demande à vous suivre 
+                {% elseif notif.nature == 'follow' %}
+                    <strong><a class="noDecoLink" href="/user/{{ author.username }}">{{ author.username }}</a></strong> vous suit 
+                {% elseif notif.nature == 'like' %}
+                    <strong><a class="noDecoLink" href="/user/{{ author.username }}">{{ author.username }}</a></strong> aime votre <strong><a class="noDecoLink" href="/post/{{ notif.getAttach() }}">publication</a></strong>
+                {% elseif notif.nature == 'comment' %}
+                    <strong><a class="noDecoLink" href="/user/{{ author.username }}">{{ author.username }}</a></strong> a commenté votre <strong><a class="noDecoLink" href="/post/{{ notif.getAttach() }}">publication</a></strong>
+                {% endif %}
+                <em>il y a 3 jours</em></p>
+            </div>
+            <div class="col-auto" id="actionIcon_{{ notif.id }}">
+                <i class="fa fa-remove removeNotif" style="font-size: 21px;margin-top: 11px;" notif_id="{{ notif.id }}"></i>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+    <div class="row justify-content-center notificationLine" data-aos="zoom-out" style="opacity: 0.25;">
+        <div class="col-10 col-sm-8 col-md-9 col-lg-10" style="margin-top: 12px;">
+            <p class="text-center"><em>Aucune notification pour le moment ...</em></p>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    $('.removeNotif').click(function (){
+        let notifId = $(this).attr('notif_id');
+        $('#actionIcon_' + notifId).html('<span class="spinner-border spinner-border-sm" role="status"></span>');
+        $.ajax({
+            url: url + `clear_notification/${notifId}`,
+            type: 'GET',
+            dataType: 'json',
+            success: function(res) {
+                if (res.message == 'OK') {
+                    if ($('.notificationLine').length == 1) {
+                        $('.notificationLine').remove();
+                        $('.notifBox').html('<div class="row justify-content-center notificationLine" data-aos="zoom-out" style="opacity: 0.25;"><div class="col-10 col-sm-8 col-md-9 col-lg-10" style="margin-top: 12px;"><p class="text-center"><em>Aucune notification pour le moment ...</em></p></div></div>');
+                    } else {
+                        $('#' + notifId).remove();
+                    }
+                } else {
+                    alert("Vous n'avez pas le droit de supprimer cette notification !");
+                }
+            },
+            error: function(res) {
+                console.error('Une erreur est survenue !')
+            }
+        });
+    });
+</script>
+{% endblock %}

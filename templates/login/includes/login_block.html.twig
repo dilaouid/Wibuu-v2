@@ -1,0 +1,32 @@
+<div class="col-10 col-sm-12 col-md-8 col-lg-7 offset-1 offset-sm-0 offset-md-2 offset-lg-0 align-self-center d-lg-flex align-items-lg-center align-self-lg-stretch bg-white p-5 rounded rounded-lg-0 my-5 my-lg-0 loginBlock" id="login-block">
+                <!-- Start: Login container -->
+                <div class="m-auto {% if flashtype == 'warning' %} shake animated {% endif %} w-lg-75 w-xl-50 loginContainer">
+                    <h5 class="text-danger text-info font-weight-light mb-5" style="font-family: 'Allerta Stencil', sans-serif;">
+                        <i class="{{ data.icon }}"></i> {{ data.title }}
+                    </h5>
+
+                    {% if page == 'login' %}
+
+                            {{ include('login/includes/form/login.html.twig') }}
+
+                    {% elseif page == 'forgot' %}
+
+                            {{ include('login/includes/form/forgot.html.twig') }}
+
+                    {% elseif page == 'recover' %}
+
+                            {{ include('login/includes/form/recover.html.twig') }}
+
+                    {% else %}
+
+                        {{ include('login/includes/form/register.html.twig') }}
+                    
+                    {% endif %}
+
+                    <p class="text-right mt-3 mb-0" style="line-height: 14px;">
+                        {% for additionalLinks in data.link %}
+                            <a class="text-danger text-info small" href="{{ additionalLinks.href }}">{{ additionalLinks.txt }}<br></a>
+                        {% endfor %}
+                    </p>
+                </div>
+            </div>

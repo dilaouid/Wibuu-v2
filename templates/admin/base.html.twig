@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Wibuu Administration - {% block title %}{% endblock %}</title>
+            <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap_2.min.css">
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+            <link rel="stylesheet" href="/assets/fonts/fontawesome-all.min.css">
+            <link rel="stylesheet" href="/assets/css/admin.css">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+            <link rel="stylesheet" href="/assets/css/styles.css">
+    </head>
+    <body id="page-top">
+        <div id="wrapper">
+            {{ include('admin/includes/sidebar.html.twig') }}
+            <div class="d-flex flex-column" id="content-wrapper" style="background: url('/assets/img/bg/bg.jpg')">
+                <div id="content">
+                {{ include('admin/includes/navbar.html.twig') }}
+                <div class="container-fluid">
+                    {% block content %}{% endblock %}
+                </div>
+                </div>
+            {{ include('admin/includes/footer.html.twig') }}
+            </div>
+            <a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+                {{ include('src/js.html') }}
+                {% block javascripts %}{% endblock %}
+                <script src="/assets/js/admin_theme.js"></script>
+        </div>
+    </body>
+</html>

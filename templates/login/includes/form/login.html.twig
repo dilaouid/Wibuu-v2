@@ -1,0 +1,18 @@
+<form method="post" action="/login">
+<div class="form-group">
+     <div class="form-group"><label class="text-secondary required" for="username">Nom d'utilisateur</label><input type="text" id="username" name="username" required maxlength="50" pattern=".{3,}" class="shadow-sm radiusInput form-control" minlength="3" value="{{ lastusername }}" /></div>
+</div>
+
+<div class="form-group">
+    <div class="form-group"><label class="text-secondary required" for="password">Mot de passe</label><input type="password" id="password" name="password" required class="shadow-sm radiusInput form-control" minlength="6" /></div>
+</div>
+
+<input type="hidden" name="_csrf_token"
+           value="{{ csrf_token('authenticate') }}">
+
+{{ include ('src/alert.html.twig') }}
+
+<div class="col text-center align-self-center my-auto">
+    <button class="btn btn-danger text-monospace shadow mt-2 btnLogin" data-bs-hover-animate="pulse" id="submitBtn" type="submit" disabled>{{ data.btn }}</button>
+</div>
+</form>

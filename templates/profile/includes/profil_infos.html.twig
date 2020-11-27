@@ -1,0 +1,66 @@
+<div class="row justify-content-center" data-aos="zoom-out" style="margin-top: 50px;">
+    <div class="col-auto align-items-xl-center" style="margin-bottom: 32px;">
+        <img class="rounded-circle pulse animated" src="/assets/img/{{ profile.uuid }}/profil.jpg" style="width: 140px;height: 140px;">
+    </div>
+    <!-- Start: PROFILE INFOS -->
+    <div class="col-auto align-items-xl-center">
+        <div class="row justify-content-center justify-content-sm-start">
+            <div class="col-auto align-self-center">
+                <p class="lead" style="font-size: 30px;">{{ profile.username }}</p>
+            </div>
+            {% if profile.me == true %}
+                <div class="col-auto">
+                    <a class="btn btn-outline-dark" role="button" href="/editprofile.html">Modifier le profil</a>
+                </div>
+            {% else %}
+                <div class="col-auto">
+                    <button class="btn btn-secondary" type="button">Contacter</button>
+                </div>
+                <div class="col-auto">
+                {% if profile.isFollowedBy(app.user.getUuid()) %}
+                    <button class="btn btn-danger followbtn" type="button" user='{{ profile.uuid }}'>Se désabonner</button>
+                {% elseif app.user.getUuid() in profile.getAwaitFollow() %}
+                    <button class="btn btn-outline-secondary followbtn" type="button" user='{{ profile.uuid }}'>En attente ...</button>
+                {% else %}
+                    <button class="btn btn-outline-danger followbtn" type="button" user='{{ profile.uuid }}'>S'abonner</button>
+                {% endif %}
+                <button class="btn btn-primary followbtn" type="button" user='{{ profile.uuid }}'>Accepter</button>
+                </div>
+                <div class="col-auto">
+                    <p data-bs-hover-animate="pulse" style="font-size: 23px;">
+                        <i class="fa fa-ellipsis-h"></i>
+                    </p>
+                </div>
+            {% endif %}
+        </div>
+        <div class="row">
+            <div class="col-auto">
+                <p style="font-size: 14px;"><strong>{{ profile.publications }}</strong> publications</p>
+            </div>
+            <div class="col-auto">
+                <p style="font-size: 14px;"><strong id="followersnb">{{ profile.followers_nb }}</strong> abonnés</p>
+            </div>
+            <div class="col-auto">
+                <p style="font-size: 14px;"><strong>{{ profile.following_nb }}</strong> abonnements</p>
+            </div>
+        </div>
+        
+        {% if profile.firstname or profile.lastname or profile.description %}
+        <div class="row">
+            <div class="col">
+                <p> {% if profile.firstname or profile.lastname %} <strong>{{ profile.firstname }}{{ profile.firstname ? ' ' : '' }}{{ profile.lastname }}</strong><br> {% endif %}
+                {{ profile.description ? profile.description : '' }}<br></p>
+            </div>
+        </div>
+        {% endif %}
+        
+        {% if profile.mutual != null %}
+        <div class="row">
+            <div class="col">
+                <p class="text-muted">Abonné{{ profile.mutual|length > 1 ? 's' : '' }} : <strong>kilo</strong>, <strong>jeguglie</strong>, <strong>KAMABAKKA</strong> et 3 autres<br></p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    <!-- End: PROFILE INFOS -->
+</div>

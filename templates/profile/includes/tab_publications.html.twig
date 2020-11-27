@@ -1,0 +1,51 @@
+<div class="tab-pane fade show active" role="tabpanel" id="publications">
+    {% if profile.publications == 0 %}
+    <div data-aos="zoom-in"><i class="far fa-user-circle" style="font-size: 34px;"></i>
+        <p class="lead" style="margin-top: 10px;">{{ profile.me == true ? 'Vos' : 'Ses' }} publications</p>
+        {% if profile.me == true %}
+            <p style="margin-top: 10px;">Vos publications apparaîtront ici. Pour l'instant,<br>Vous n'en avez aucune, alors dépêchez-vous ! ;-D</p>
+        {% else %}
+            <p style="margin-top: 10px;">{{ profile.username }} serait timide ?<br>Il n'a encore rien publié sur son profil ...</p>
+        {% endif %}
+    </div>
+    {% else %}
+    <div data-aos="zoom-in">
+        <div class="gallerylistPublications row row-cols-3 justify-content-center align-items-center" style="margin-bottom: 20px;">
+            {% for post in posts %}
+            <div class="col-3 boxPicGalleryProfil" style="background: url(/post/{{ post.uuid }}/{{ post.private == true and profile.me == true ? post.pass ~ '/' : '' }}view) center / cover no-repeat;">
+                <div data-aos="zoom-out">
+                    <a class="text-body" href="/post/{{ post.uuid }}{{ post.private == true and profile.me == true ? '/' ~ post.pass : '' }}">
+                        <div class="infosPic">
+                            <div class="row no-gutters justify-content-center imageHoverInfos">
+                                <div class="col-auto align-self-center">
+                                    <p><i class="fa fa-heart{{ app.user and post.isLikedByUser(app.user) ? '' : '-o' }}"></i> {{ post.likes | length }}</p>
+                                </div>
+                                <div class="col-auto offset-1">
+                                    <p><i class="fa fa-comment{{ app.user and post.isCommentedByUser(app.user) ? '' : '-o' }}"></i> {{ post.comments | length }}</p>
+                                </div>
+                            </div>
+                        {% if post.private == true and profile.me == true %}
+                        <div class="row no-gutters justify-content-center" style="width: 100%;">
+                            <div class="col-auto align-self-center">
+                                <p><i class="fa fa-key"></i></p>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% if profile.publications > 9 %}
+        <div user="{{ profile.id }}" class="row row-cols-3 justify-content-center align-items-center" style="margin-bottom: 20px;" id="spinnerloadPublications">
+            <div class="spinnerloadpub col-3" style="padding-right: 0px;padding-left: 0px;margin-right: 13px;">
+                <span class="spinner-border spinner-border-sm" role="status"></span>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+    {% endif %}
+</div>

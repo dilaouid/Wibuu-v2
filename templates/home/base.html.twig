@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Wibuu - {% block title %}{% endblock %}</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Adamina">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Allerta+Stencil">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora">
+        <link rel="stylesheet" href="/assets/fonts/fontawesome5-overrides.min.css">
+        <link rel="stylesheet" href="/assets/css/navbar.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.2.0/aos.css">
+        <link rel="stylesheet" href="/assets/css/navbar.css">
+
+        {{ include('src/css.html') }}
+        {% block stylesheets %}{% endblock %}
+
+
+
+<body style="background: url(assets/img/bg/bg.jpg);">
+    {{ include('src/navbar.html.twig') }}
+    <div class="container">
+
+    {% if searchbar.status == true %}
+        {{ include('src/searchbar.html.twig') }}
+    {% endif %}
+
+    {% block body %}{% endblock %}
+
+    {{ include('src/modal.html.twig') }}
+
+    </div>
+    {{ include('src/js.html') }}
+    {% block javascripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,7 @@
+<div class="tab-content" style="margin-top: 70px;">
+    {{ include('profile/includes/tab_publications.html.twig') }}
+    {% if profile.me == true %}
+        {{ include('profile/includes/tab_bookmarks.html.twig') }}
+    {% endif %}
+    {{ include('profile/includes/tab_identifications.html.twig') }}
+</div

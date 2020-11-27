@@ -1,0 +1,218 @@
+{% extends 'home/base.html.twig' %}
+
+{% block title %}Nouvelle publication{% endblock %}
+
+{% block stylesheets %} <link rel="stylesheet" href="/assets/css/scrollbar.css"> {% endblock %}
+
+{% block body %}
+<div class="row no-gutters" data-aos="fade-down" style="margin-top: 38px;margin-bottom: 44px;" id="choiceType">
+    <div class="col text-center choiceTypeSubmit" data-bs-hover-animate="pulse" id="webcam">
+        <i class="fa fa-camera-retro" style="font-size: 63px;margin: 44px;"></i>
+    </div>
+    <div class="col text-center choiceTypeSubmit" data-bs-hover-animate="pulse" id="import">
+        <i class="fa fa-file-picture-o" style="font-size: 63px;margin: 44px;"></i>
+    </div>
+</div>
+
+{{ form_start(form, { 'attr': {'id': 'formSubmit', 'style': 'display:none'} }) }}
+            <div class="form-row row-cols-2 justify-content-center" data-aos="fade-down" style="margin-top: 38px;margin-bottom: 44px;">
+                <div class="col-7 col-sm-auto col-md-auto col-lg-7 col-xl-7" style="margin-bottom: 16px;">
+                    <div class="form-row justify-content-center">
+                        <div class="col-auto">
+                            <!-- Start: BACKGROUND, USE THE PHOTO OR IMPORTED FILE -->
+                            <div class="d-block blockImageCapture" id="blocap" style="">
+                                <img class="img-fluid" id="filter" src="/assets/img/filters/1.png">
+                                <img id="img" src="" style="display:none;" width="100%">
+                                <video autoplay style=""></video>
+                            </div>
+                            <!-- End: BACKGROUND, USE THE PHOTO OR IMPORTED FILE -->
+                        </div>
+                    </div>
+                    <div class="form-group d-none">
+                        {{ form_widget(form.file) }}
+                    </div>
+                    <input type="file" name="file" style="display:none">
+                    <div class="form-row justify-content-center" style="margin-top: 20px;">
+                        <!-- Start: USE WEBCAM -->
+                        <div class="col-auto">
+                            <button class="btn btn-danger btn-lg" data-bs-hover-animate="pulse" id="btnShrek" type="button" style="height: 60px;width: 104px;border-radius: 17px;">
+                                <i class="fa" id="iconBtn"></i>
+                            </button>
+                        </div>
+                        <!-- End: USE WEBCAM -->
+                    </div>
+                </div>
+                <div class="col-5 col-sm-auto col-lg-5 col-xl-5 boxSubmitForm">
+                    <div class="form-row justify-content-center" style="margin-top: 12px;">
+                        <div class="col-3">
+                            {{ form_label(form.posX) }}
+                        </div>
+                        <div class="col-auto">
+                            {{ form_widget(form.posX) }}
+                        </div>
+                        <div class="col-auto">
+                            <span class="badge badge-primary" id="x_pos_value">0</span>
+                        </div>
+                    </div>
+                    <div class="form-row justify-content-center">
+                        <div class="col-3">
+                            {{ form_label(form.posY) }}
+                        </div>
+                        <div class="col-auto">
+                            {{ form_widget(form.posY) }}
+                        </div>
+                        <div class="col-auto">
+                            <span class="badge badge-primary" id="y_pos_value">0</span>
+                        </div>
+                    </div>
+                    <div class="form-row justify-content-center" style="margin-bottom: 23px;">
+                        <div class="col-3">
+                            {{ form_label(form.size) }}
+                        </div>
+                        <div class="col-auto">
+                            {{ form_widget(form.size) }}
+                        </div>
+                        <div class="col-auto">
+                            <span class="badge badge-primary" id="size_value">300</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-12">
+                            <!-- Start: 16 scrollbar styles -->
+                            <div><span class="badge badge-pill badge-warning" id="filter_value" style="margin-left: 42%;padding: 9px;">{{ filters|first.name}}</span>
+                                <div style="margin-top: -15px;">
+                                    <section style="color: rgb(113,113,113);padding: 30px;margin-bottom: 20px;border-radius: 35px;">
+                                        <!-- Start: Scroll style 1 -->
+                                        <div class="container scstyle-12 sc-overflow">
+                                            <article>
+                                                <div class="form-row">
+                                                <input type="hidden" value="{{ filters|first.id}}" name="filterID" required>
+                                                {% for filter in filters %}
+                                                    <div class="col-auto"><img name="filterElem" class="{{ loop.first ? 'selectedFilter' : 'notSelectedFilter' }}" src="/assets/img/filters/{{ filter.id }}.png" filterID="{{ filter.id }}" filtername="{{ filter.name }}"></div>
+                                                {% endfor %}
+                                                </div>
+                                            </article>
+                                        </div>
+                                        <!-- End: Scroll style 1 -->
+                                    </section>
+                                </div>
+                            </div>
+                            <!-- End: 16 scrollbar styles -->
+                        </div>
+                    </div>
+                        <div class="col">
+                            <div class="form-group d-none">
+                                {{ form_widget(form.filterH, {'attr': {'value': filters|first.id }}) }}
+                            </div>
+                            {{ form_row(form.description) }}
+                            {{ form_row(form.position) }}
+                            {{ form_row(form.identificationPosts) }}
+                            <div class="form-group">
+                                <div class="form-check">
+                                    {{ form_widget(form.private) }}
+                                </div>
+                            </div>
+                        <button class="btn btn-danger btn-block" data-bs-hover-animate="pulse" type="submit" id="submit" style="margin-bottom: 36px;border-radius: 20px;" disabled="true">Envoyer</button></div>
+            
+            {{ include('src/alert.html.twig') }}
+
+            </div>
+
+{{ form_end(form) }}
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+
+$(function() {
+
+    var filter      = $('#filter');
+    var webcam      = false;
+    var importFile  = false;
+
+    window.onload = function () {
+        var form = document.getElementById('formSubmit');
+        $('input').change(function () {
+            for(var i=0; i < form.elements.length; i++) {
+                if(form.elements[i].value === '' && form.elements[i].hasAttribute('required')){
+                    $('#submit').attr('disabled', 'true');
+                    return false;
+                }
+            }
+            $('#submit').removeAttr('disabled');
+        }); 
+    };
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            var imgToUse = document.getElementById('img');
+            reader.onload = function(e) {
+                console.log(e.target.result);
+                $('#img').attr('src', e.target.result);
+                $('#post_base64').attr('value', e.target.result);
+                imgToUse.onload = function() {
+                    $('#img, #blocap').removeAttr('style');
+                    var width = parseInt(this.width);
+                    var height = parseInt(this.height);
+                    $('#img, #blocap').attr("style", 'width: ' + (width - (width / 10)) + 'px; height: ' +  (height - (height / 10)) + 'px');
+                }
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("input[type=file]").change(function() {
+        $('#img').removeAttr('style');
+        readURL(this);
+    });
+
+
+    $('.choiceTypeSubmit').click(function () {
+        $('#formSubmit').removeAttr('style');
+        $('#choiceType').remove();
+        if (this.id === 'webcam') {
+            $('#iconBtn').addClass('fa-camera');
+            webcam = true;
+        } else if (this.id === 'import') {
+            $('#iconBtn').addClass('fa-file');
+            importFile = true;
+        } else {
+            console.log('An error occured');
+        }
+    });
+
+    $('img[name="filterElem"]').on('click', function() {
+        document.getElementsByName('filterElem').forEach(el => el.className = 'notSelectedFilter');
+        $(this).removeClass('notSelectedFilter');
+        $(this).addClass('selectedFilter');
+        filter.attr('src', '/assets/img/filters/' + $(this).attr('filterID') + '.png');
+        $('#filter_value').html($(this).attr('filtername'));
+        $('#post_filterH').val($(this).attr('filterid'));
+
+    });
+
+    $('#btnShrek').on('click', function() {
+        if (webcam == true || importFile == false)
+            return null;
+        document.getElementsByName('post[file]')[0].click();
+    });
+
+    $('#post_posY, #post_posX, #post_size').on('input', function () {
+        posX = $('#post_posX').val();
+        $('#x_pos_value').html(posX);
+
+        posY = $('#post_posY').val();
+        $('#y_pos_value').html(posY);
+
+        size = $('#post_size').val();
+        $('#size_value').html(size);
+
+        filter.attr("style", "margin-top: " + posY + "px; margin-left: " + posX + "px;width: " + size + "px;position: absolute;");
+    });
+
+});
+
+</script>
+{% endblock %}

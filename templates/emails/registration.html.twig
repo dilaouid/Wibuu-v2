@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+
+<link rel="stylesheet" href="{{ address }}/assets/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="{{ address }}/assets/fonts/fontawesome-all.min.css">
+<link rel="stylesheet" href="{{ address }}/assets/fonts/font-awesome.min.css">
+<link rel="stylesheet" href="{{ address }}/assets/fonts/line-awesome.min.css">
+<link rel="stylesheet" href="{{ address }}/assets/css/styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.2.0/aos.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora">
+{% endblock %}
+
+{% block body %}
+<div class="container" style="margin-top: 48px;background: url({{ address }}/assets/img/bg/bg_2.jpg);border-radius: 21px;border: 1px solid rgb(55,55,55) ;">
+    <div class="row text-center justify-content-center align-items-center">
+        <div class="col">
+            <h1 class="text-center text-black-50" style="font-family: Lora, serif;font-size: 34px;margin-top: 27px;">Bienvenue parmi nous {{ name }} !</h1>
+            <hr><img class="border rounded-circle border-dark shadow" style="text-align: center;width: 141px;background: url({{ address }}/assets/img/bg/bg.jpg)" src="{{ address }}/assets/img/email/icon.png">
+            <p style="margin-top: 17px;">Vous êtes encore tout nouveau par ici, une grande aventure se dessine !<br>Pour la commencer, il ne vous reste qu'à valider votre compte en cliquant sur ce GROS<br>bouton rouge, allez vas-y !!</p><a class="btn btn-danger shadow" role="button"
+                style="width: 305px;height: 51px;margin-top: -1px;margin-bottom: 16px;padding-top: 15px;border-style: solid;border-color: rgb(255,111,111);border-radius: 27px;opacity: 0.81;" target="_blank" href="{{ signedUrl|raw }}">Je valide mon compte !</a></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+        <script src="{{ address }}/assets/js/jquery.min.js"></script>
+<script src="{{ address }}/assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="{{ address }}/assets/js/bs-init.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.2.0/aos.js"></script>
+{% endblock %}

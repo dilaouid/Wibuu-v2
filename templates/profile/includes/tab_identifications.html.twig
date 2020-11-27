@@ -1,0 +1,52 @@
+<div class="tab-pane fade" role="tabpanel" id="mark">
+    {% if profile.me == true or profile.me == false and tagged|length == 0 %}
+    <div data-aos="zoom-in" style="margin-bottom: 51px;"><i class="fa fa-id-card-o" style="font-size: 34px;"></i>
+        {% if profile.me %}
+            <p class="lead" style="margin-top: 10px;">Vos identifications</p>
+            <p style="margin-top: 10px;">Les publications où un autre utilisateur vous aurait identifié, pour<br>X ou Y raison !</p>
+        {% else  %}
+            <p class="lead" style="margin-top: 10px;">Les identifications de {{ profile.username }}</p>
+            <p style="margin-top: 10px;">Les publications où {{ profile.username }} apparaît ! Il n'y en a aucune<br> pour le moment, RIP !</p>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <div data-aos="zoom-in">
+        <div class="row row-cols-3 justify-content-center align-items-center" style="margin-bottom: 20px;">
+        {% for post in tagged|reverse|slice(0, 9) %}
+        {% set post = post.getPost() %}
+        <div class="col-3 boxPicGalleryProfil" data-bs-hover-animate="pulse" style="background: url(/post/{{ post.uuid }}/{{ post.private ? post.pass ~ '/' : '' }}view) center / cover no-repeat;">
+                <div data-aos="zoom-out" style="">
+                    <a class="text-body" href="/post/{{ post.uuid }}">
+                        <div class="infosPic">
+                            <div class="row no-gutters justify-content-center" style="margin-top: 40%;width: 100%">
+                                <div class="col-auto align-self-center">
+                                    <p><i class="fa fa-heart{{ app.user and post.isLikedByUser(app.user) ? '' : '-o' }}"></i> {{ post.likes | length }}</p>
+                                </div>
+                                <div class="col-auto offset-1">
+                                    <p><i class="fa fa-comment{{ app.user and post.isCommentedByUser(app.user) ? '' : '-o' }}"></i> {{ post.comments | length }}</p>
+                                </div>
+                            </div>
+                        {% if post.private == true %}
+                        <div class="row no-gutters justify-content-center" style="width: 100%">
+                            <div class="col-auto align-self-center">
+                                <p><i class="fa fa-key"></i></p>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% if tagged|length > 9 %}
+        <div user="{{ profile.id }}" class="row row-cols-3 justify-content-center align-items-center" style="margin-bottom: 20px;" id="spinnerloadBookmarks">
+            <div class="col-3" style="padding-right: 0px;padding-left: 0px;margin-right: 13px;">
+                <span class="spinner-border spinner-border-sm" role="status"></span>
+            </div>
+        </div>
+        {% endif %}
+        </div>
+</div>

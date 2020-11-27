@@ -1,0 +1,137 @@
+{% for card in cards %}
+
+<div id="card_{{ card.img.id }}" class="shadow-lg cardIndex" data-aos="fade-down">
+
+    <!-- Start: PUBLISHER PROFILE -->
+    <div class="row" style="margin: 15px;">
+
+        <!-- Start: PROFIL PICTURE -->
+        <div class="col-auto">
+            <a href="/user/{{ card.user.username }}">
+            <img class="rounded-circle" src="/assets/img/{{ card.user.username }}/profil.jpg" style="width: 42px;"></a></div>
+        <!-- End: PROFIL PICTURE -->
+
+        <!-- Start: USERNAME -->
+        <div class="col-auto d-xl-flex align-self-center justify-content-xl-center align-items-xl-center" style="margin-bottom: -14px;margin-left: -14px;">
+            <a class="text-dark noDecoLink" href="/user/{{ card.user.username }}" style="margin-bottom: 16px;">
+            <strong>{{ card.user.username }}</strong></a></div>
+        <!-- End: USERNAME -->
+
+        <!-- Start: BURGER ICON -->
+        <div class="col text-right align-self-center">
+            <i class="fa fa-bars iconTy" data-bs-hover-animate="pulse" onlick="openModal('{{ card.user.username }}')"></i>
+        </div>
+        <!-- End: BURGER ICON -->
+
+    </div>
+    <!-- End: PUBLISHER PROFILE -->
+
+
+    <!-- Start: IMAGE -->
+    <div class="row no-gutters d-block">
+        <div class="col text-center">
+            <img class="img-fluid" src="/assets/img/publications/{{ card.user.id }}/{{ card.img.id }}" style="max-width: 400px; width: 100%;">
+        </div>
+    </div>
+    <!-- End: IMAGE -->
+
+    <!-- Start: FILTER -->
+    <div class="row" style="margin: 15px;margin-top: 0px;">
+        <div class="col">
+            <p class="text-secondary">Filtre utilisé: {{ card.img.filter }}</p>
+        </div>
+    </div>
+    <!-- End: FILTER -->
+
+    {% if card.img.nblikes > 0 %}
+    <div class="row" style="margin: 15px;margin-top: -25px;">
+        <div class="col-auto">
+            <p><strong>{{ card.img.nblikes }} J'aime{{ card.img.nblikes > 1 ? 's' : '' }}</strong></p>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Start: COMMENT + PUBLICATION DATE -->
+    <div class="row" style="margin: 15px;margin-bottom: -19px;margin-top: -25px;">
+        <div class="col-auto">
+
+            <!-- Start: DESCRIPTION -->
+            <p><strong><a href="/user/{{ card.user.username }}" class="noDecoLink">{{ card.user.username }}</strong></a> {{ card.img.desc }}</p>
+            <!-- End: DESCRIPTION -->
+
+            <!-- Start: LAST COMMENT -->
+            <div id="comments_{{ card.img.id }}">
+
+                <hr>
+
+                {% if card.comments|length > 0 %}
+
+                    <a href="#" class="displaycomment" id="{{ card.img.id }}">Afficher le{{ card.comments|length > 1 ? 's' : '' }} {{ card.comments|length - 1 }} commentaire{{ card.comments|length > 1 ? 's' : '' }}</a>
+                    <p><strong><a href="/user/{{ card.comments[comments|length - 1].username }}" class="noDecoLink">{{ card.comments[comments|length - 1].username }}</a></strong> {{ card.comments[comments|length - 1].message }}</p>
+
+                {% else %}
+                    <p class="text-secondary"><em>Aucun commentaire...</em></p>
+                {% endif %}
+
+            </div>
+            <!-- End: LAST COMMENT -->
+
+            <!-- Start: DATE -->
+            <div>
+                <p class="text-uppercase text-secondary">{{ card.img.publication|date("d/m/Y", "Europe/Paris") }}</p>
+            </div>
+            <!-- End: DATE -->
+            
+        </div>
+    </div>
+    <!-- End: COMMENT + PUBLICATION DATE -->
+    <!-- Start: ACTIONS -->
+    <div class="row" style="margin: 15px;">
+
+        <!-- Start: LIKE -->
+        <div class="col-auto" style="margin-right: -15px;">
+            {% if card.img.liked == true %}
+            <i class="fa fa-heart-o iconSize_1" data-bs-hover-animate="pulse" onclick="like('{{ card.img.id }}')"></i>
+            {% else %}
+            <i class="fa fa-heart iconSize_1 likedBtn" data-bs-hover-animate="pulse" onclick="like('{{ card.img.id }}')"></i>
+            {% endif %}
+        </div>
+        <!-- End: LIKE -->
+
+        <!-- Start: COMMENT -->
+        <div class="col-auto">
+            {% if card.img.commented == true %}
+            <i class="fa fa-comment-o iconSize_1" data-bs-hover-animate="pulse"></i>
+            {% else %}
+            <i class="fa fa-comment iconSize_1 commentedBtn" data-bs-hover-animate="pulse"></i>
+            {% endif %}
+        </div>
+        <!-- End: COMMENT -->
+
+        <!-- Start: BOOKMARK -->
+        <div class="col text-right">
+            {% if card.img.bookmarked == true %}
+            <i class="fa fa-bookmark-o iconSize_1" data-bs-hover-animate="pulse" onclick="bookmark('{{ card.img.id }}')"></i>
+            {% else %}
+            <i class="fa fa-bookmark iconSize_1" data-bs-hover-animate="pulse" onclick="bookmark('{{ card.img.id }}')"></i>
+            {% endif %}
+        </div>
+        <!-- End: BOOKMARK -->
+
+    </div>
+    <!-- End: ACTIONS -->
+
+        <div class="form-row no-gutters" style="border-bottom-left-radius: 133px;">
+            <div class="col-8">
+                <input class="form-control form-control-lg commentInput" id="input_{{ card.img.id }}" type="text" data-toggle="tooltip" data-bs-tooltip placeholder="Ajouter un commentaire ..." name="comment" required minlength="2" title="Le commentaire doit avoir au moins deux caractères" autocomplete="off"></div>
+            <div class="col-4 text-right">
+            <button id="btn_{{ card.img.id }}"class="btn btn-outline-danger btn-block btn-lg submitCommentBtn" type="submit" disabled onclick="submitComment({{ card.img.id }})">Publier {# <span role="status" class="spinner-border spinner-border-sm" id="spin_{{ card.img.id }}"></span> #} </button>
+            </div>
+        </div>
+</div>
+
+{% endfor %}
+
+{% if cards|length == 3 %}
+    <span class="spinner-grow text-danger text-center" id="loadContent" role="status"></span></div>
+{% endif %}

@@ -1,0 +1,12 @@
+{% extends 'home/base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-sm-auto col-md-7 col-lg-6 order-2 order-sm-2 order-md-1">
+        {{ include('home/includes/card_index.html.twig') }}
+        {{ include('home/includes/right_col_index.html.twig') }}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,11 @@
+{{ form_start(form) }}
+
+{{ form_row(form.plainPassword) }}
+
+{{ include ('src/alert.html.twig') }}
+
+<div class="col text-center align-self-center my-auto">
+    <button class="btn btn-danger text-monospace shadow mt-2 btnLogin" data-bs-hover-animate="pulse" id="submitBtn" type="submit" disabled>{{ data.btn }}</button>
+</div>
+
+{{ form_end(form) }}

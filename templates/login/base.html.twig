@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ data.pagename }} {% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Adamina">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Allerta+Stencil">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora">
+    <link rel="stylesheet" href="/assets/fonts/fontawesome5-overrides.min.css">
+    <link rel="stylesheet" href="/assets/css/login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.2.0/aos.css">
+{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid">
+        <div class="row mh-100vh">
+
+            {{ data.sideImg_pos == 'right' ? include('login/includes/login_block.html.twig') : include('login/includes/sideimg.html.twig') }}
+
+            {{ data.sideImg_pos == 'right' ? include('login/includes/sideimg.html.twig') : include('login/includes/login_block.html.twig') }}
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="/assets/js/formLogin.js"></script>
+{% endblock %}
